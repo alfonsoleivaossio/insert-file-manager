@@ -37,4 +37,4 @@
 	stringMaskSexoVISA				VARCHAR(30) := '[HM]';
 	stringMaskNivEstVISA			VARCHAR(30) := '[SMB]';
 	stringMaskNacionalidad			VARCHAR(30) := '[CE]';
-	strrinMaskNumLetACH 			VARCHAR(30) := '[a-zA-Z0-9ñÑ.,;:\-\*/&#\$\%=]*';
+	stringMaskNumLetACH 			VARCHAR(30) := '[a-zA-Z0-9ñÑ.,;:\-\*/&#\$\%=]*';
