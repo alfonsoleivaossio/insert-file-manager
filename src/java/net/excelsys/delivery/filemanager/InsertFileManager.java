@@ -11,10 +11,10 @@ import org.apache.commons.io.IOUtils;
 
 public class InsertFileManager {
 
-	private static final String _RESULT_PATH = "/home/ftroncoso/workspace/producto2/ScriptProyectos/";
-
-	private static final String _READ_PATH = "/home/ftroncoso/Descargas/excelsys/filemanager/independiente/";
-
+	//private static final String _RESULT_PATH = "/home/ftroncoso/workspace/producto2/ScriptProyectos/";
+	private static final String _RESULT_PATH = "C:\\";
+	//private static final String _READ_PATH = "/home/ftroncoso/Descargas/excelsys/filemanager/independiente/";
+	private static final String _READ_PATH = "C:\\";
 	private StringBuilder _fileLines;
 
 	public InsertFileManager() {
@@ -147,12 +147,12 @@ public class InsertFileManager {
 		addLine("	SELECT ID INTO idTemplateParser FROM FM_TEMPLATE_PARSER WHERE PARSER_NAME = 'structured';");
 		addLine("	SELECT ID INTO idTemplateFileType FROM FM_TEMPLATE_FILE_TYPE WHERE TYPE_CODE = '"
 				+ codeTemplateFileType + "';");
-		addLine("	INSERT INTO FM_TEMPLATE_FILE (ID,CREATION_USER,DESCRIPTION,ENABLED,FIELDS_HAVE_START,NAME,SEPARATOR_STR,DELIMITER_TYPE_ID,MODULE_ID,TEMPLATE_FILE_ORIGEN_ID,TEMPLATE_FILE_PARENT_ID,TEMPLATE_PARSER_ID,TEMPLATE_FILE_ID,VALIDATION_SETUP_ID) "
+		addLine("	INSERT INTO FM_TEMPLATE_FILE (ID,CREATION_USER,DESCRIPTION,ENABLED,FIELDS_HAVE_START,NAME,SEPARATOR_STR,DELIMITER_TYPE_ID,MODULE_ID,TEMPLATE_PARSER_ID,TEMPLATE_FILE_ID,VALIDATION_SETUP_ID) "
 				+ "VALUES(idTemplateFile, 'AVAL', 'Template "
 				+ codeTemplateFileType
 				+ "', 1, 0, '"
 				+ codeTemplateFileType
-				+ "', null, idDelimiterType, null, null, null, idTemplateParser, idTemplateFileType, idValidationSetup);");
+				+ "', null, idDelimiterType, null, idTemplateParser, idTemplateFileType, idValidationSetup);");
 		addLine("	----------------------------------------------FIN TEMPLATE_FILE----------------------------------------------");
 
 		addLine("");
@@ -161,8 +161,8 @@ public class InsertFileManager {
 		for (String str : lines) {
 			tmpArray = str.split(";");
 			if (tmpArray[0].startsWith("SECTION_")) {
-				String delimiter = tmpArray[1].equals("") ? "null" : tmpArray[1]
-						.toString();
+				String delimiter = tmpArray[1].equals("") ? "null" : "'"+tmpArray[1]
+						.toString()+"'";
 				tmpString = tmpArray[0].split("_")[1];
 				addLine("	SELECT ID INTO idFM" + tmpString.toLowerCase()
 						+ " FROM FM_SECTION  WHERE SECTION_NAME= '"
@@ -186,6 +186,8 @@ public class InsertFileManager {
 		addLine("	----------------------------------------------INICIO SECCION VALIDACIONES----------------------------------------------");
 		// TODO: Query de los otrs validadores
 		addLine("	SELECT ID INTO idValidatorTypeString  FROM VL_VALIDATION_DATA_TYPE WHERE DT_CODE = 'string';");
+		addLine("	SELECT ID INTO idValidatorTypeDate  FROM VL_VALIDATION_DATA_TYPE WHERE DT_CODE = 'date';");
+		addLine("	SELECT ID INTO idValidatorTypeNumber  FROM VL_VALIDATION_DATA_TYPE WHERE DT_CODE = 'number';");
 		addLine("");
 		count = 0;
 
@@ -193,7 +195,7 @@ public class InsertFileManager {
 		int countIndexBySections = 0;
 
 		String[] arrayLine, arrayFieldName;
-		String fieldName, referenceName, fieldLength, fieldStartPosition, fieldMask;
+		String fieldName, referenceName, fieldLength, fieldStartPosition, fieldMask, fieldValidatorType;
 		for (String str : lines) {
 			arrayLine = str.split(";");
 			fieldName = arrayLine[0];
@@ -201,6 +203,7 @@ public class InsertFileManager {
 				fieldStartPosition = arrayLine[1];
 				fieldLength = arrayLine[3];
 				fieldMask = arrayLine[4];
+				fieldValidatorType = arrayLine[5];
 
 				arrayFieldName = fieldName.split("_");
 				referenceName = "";
@@ -214,14 +217,16 @@ public class InsertFileManager {
 				addLine("	SELECT VL_VALIDATION_INSTANCE_SQ.NEXTVAL INTO idValidatorInstance"
 						+ count + " FROM DUAL;");
 
-				addLine("	INSERT INTO VL_VALIDATION_INSTANCE (ID,MASK,REFERENCE_NAME,REQUIRED,VALIDATION_DATA_TYPE_ID,VALIDATION_SETUP_ID) "
+				addLine("	INSERT INTO VL_VALIDATION_INSTANCE (ID,MASK,REFERENCE_NAME,IS_REQUIRED,VALIDATION_DATA_TYPE_ID,VALIDATION_SETUP_ID) "
 						+ "VALUES (idValidatorInstance"
 						+ count
 						+ ", "
 						+ fieldMask
 						+ ", "
 						+ referenceName
-						+ ", 1, idValidatorTypeString, idValidationSetup);");
+						+ ", 1, "
+						+ fieldValidatorType
+						+ ", idValidationSetup);");
 
 				addLine("	INSERT INTO FM_TEMPLATE_FIELD (ID,ABSENT_IN_FILE,DEFAULT_VALUE,DESCRIPTION,INDEX_NR,IS_BASE_FIELD,LENGTH,NAME,START_POSITION,FIELD_CATEGORY_ID,TEMPLATE_FILE_SECTION_ID,VAL_INSTANCE_ID) "
 						+ "VALUES (FM_TEMPLATE_FIELD_SQ.NEXTVAL, 0, null, '"
