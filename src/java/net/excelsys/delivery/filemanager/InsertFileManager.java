@@ -197,7 +197,6 @@ public class InsertFileManager {
 		for (String str : lines) {
 			arrayLine = str.split(";");
 			fieldName = arrayLine[0];
-			System.out.println("procesando: [" + str + "]");
 			if (!fieldName.startsWith("SECTION_")) {
 				fieldStartPosition = arrayLine[1];
 				fieldLength = arrayLine[3];
