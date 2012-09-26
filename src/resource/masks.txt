@@ -24,7 +24,7 @@
 	stringMaskC						VARCHAR(30) := '[C]';
 	stringMaskAtoZ					VARCHAR(30) := '[A-Z]*';
 	stringMaskAlphaNumWhites		VARCHAR(30) := '[a-zA-Z0-9 ]*';
-	--stringMaskWhites				VARCHAR(30) := '[ ]*';
+	stringMaskWhites				VARCHAR(30) := '[ ]*';
 	stringMaskAcctType				VARCHAR(30) := '[GEN]';
 	stringMaskNoveltyType 			VARCHAR(30) := '[CMRTD][ ][ ]';
 	stringMaskDate1					VARCHAR(30) := 'AAAAMMDD';
