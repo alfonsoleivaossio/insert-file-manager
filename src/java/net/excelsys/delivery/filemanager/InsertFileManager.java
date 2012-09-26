@@ -34,8 +34,8 @@ public class InsertFileManager {
 				String header = lines.get(0);
 				String[] headerArray = header.split(";");
 				String prefix = headerArray[0];
-				String desc = headerArray[0];
-				String resultFile = headerArray[0];
+				String desc = headerArray[1];
+				String resultFile = headerArray[2];
 				lines.remove(0);
 				processLines(lines, prefix, desc, resultFile);
 			}
@@ -63,7 +63,7 @@ public class InsertFileManager {
 	}
 
 	private void addLine(String text) {
-		addLine(text + "\n");
+		_fileLines.append(text + "\n");
 	}
 
 	private void processLines(List<String> lines, String prefix, String desc,
@@ -161,7 +161,7 @@ public class InsertFileManager {
 		for (String str : lines) {
 			tmpArray = str.split(";");
 			if (tmpArray[0].startsWith("SECTION_")) {
-				String delimiter = tmpArray.length == 1 ? "null" : tmpArray[1]
+				String delimiter = tmpArray[1].equals("") ? "null" : tmpArray[1]
 						.toString();
 				tmpString = tmpArray[0].split("_")[1];
 				addLine("	SELECT ID INTO idFM" + tmpString.toLowerCase()
@@ -197,6 +197,7 @@ public class InsertFileManager {
 		for (String str : lines) {
 			arrayLine = str.split(";");
 			fieldName = arrayLine[0];
+			System.out.println("procesando: [" + str + "]");
 			if (!fieldName.startsWith("SECTION_")) {
 				fieldStartPosition = arrayLine[1];
 				fieldLength = arrayLine[3];

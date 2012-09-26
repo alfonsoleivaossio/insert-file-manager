@@ -31,3 +31,10 @@
 	stringMaskDate2					VARCHAR(30) := 'MMDD';
 	stringMaskTextField				VARCHAR(30) := '[a-zA-Z0-9 \\-_&.]*';
 	stringMaskWhitecCdD				VARCHAR(30) := '[cCdD ]';
+	stringMaskTypeIdClient			VARCHAR(30) := '[CNTEILR]';
+	stringMaskVISATypeId			VARCHAR(30) := '[CNTEILR]';
+	stringMaskEstCivilVISA			VARCHAR(30) := '[SC]';
+	stringMaskSexoVISA				VARCHAR(30) := '[HM]';
+	stringMaskNivEstVISA			VARCHAR(30) := '[SMB]';
+	stringMaskNacionalidad			VARCHAR(30) := '[CE]';
+	strrinMaskNumLetACH 			VARCHAR(30) := '[a-zA-Z0-9ñÑ.,;:\-\*/&#\$\%=]*';
